@@ -1,4 +1,6 @@
 import * as R from "ramda";
+import { messageHasEmblem } from "../goldencrown";
+import { emblem } from "./../data";
 
 export const randomBelow = max => Math.floor(Math.random() * (max + 1));
 export const randomIndex = R.compose(
@@ -26,3 +28,11 @@ export const any = R.curry((size, messages) => {
     ? R.flatten([removedMessage, any(len - 1, newMessagesList)])
     : [removedMessage];
 });
+
+export const isMessageValid = R.converge(messageHasEmblem, [
+  R.prop("text"),
+  R.compose(
+    emblem,
+    R.prop("ally")
+  )
+]);
