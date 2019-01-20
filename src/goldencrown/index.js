@@ -1,4 +1,4 @@
-import { compose, reduce, split } from "ramda";
+import { compose, match, length, reduce, split, curry } from "ramda";
 export const characterHistogram = compose(
   reduce(
     (frequency, character) => ({
@@ -8,4 +8,11 @@ export const characterHistogram = compose(
     {}
   ),
   split("")
+);
+
+export const characterFrequency = curry((character, string) =>
+  compose(
+    length,
+    match(new RegExp(character, "g"))
+  )(string)
 );

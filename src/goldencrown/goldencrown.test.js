@@ -1,4 +1,4 @@
-import { characterHistogram } from "./";
+import { characterHistogram, characterFrequency } from "./";
 
 describe("characterHistogram", () => {
   it("should count characters in a string", () => {
@@ -20,5 +20,13 @@ describe("characterHistogram", () => {
       d: 4
     });
     expect(characterHistogram("")).toEqual({});
+  });
+});
+
+describe("characterFrequency()", () => {
+  it("should get number of occurences of a character in a string", () => {
+    expect(characterFrequency("a", "abcdabcdabcd")).toBe(3);
+    expect(characterFrequency("b", "abcdabcdabcd")).toBe(3);
+    expect(characterFrequency("", "abcdabcdabcd")).toBe(13);
   });
 });
