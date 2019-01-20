@@ -36,3 +36,19 @@ export const isMessageValid = R.converge(messageHasEmblem, [
     R.prop("ally")
   )
 ]);
+
+export const labelText = R.curry((kingdom, ally, text) => ({
+  kingdom,
+  ally,
+  text
+}));
+
+export const addAlly = ally =>
+  R.evolve({
+    allies: R.append(ally)
+  });
+
+export const initialScores = map(kingdom => ({
+  kingdom,
+  allies: []
+}));
