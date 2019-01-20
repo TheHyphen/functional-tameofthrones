@@ -1,4 +1,13 @@
-import { compose, match, length, reduce, split, curry } from "ramda";
+import {
+  compose,
+  match,
+  length,
+  reduce,
+  split,
+  curry,
+  all,
+  toPairs
+} from "ramda";
 export const characterHistogram = compose(
   reduce(
     (frequency, character) => ({
@@ -16,3 +25,13 @@ export const characterFrequency = curry((character, string) =>
     match(new RegExp(character, "g"))
   )(string)
 );
+
+export const messageHasEmblem = (message, emblem) =>
+  compose(
+    all(
+      ([character, frequency]) =>
+        characterFrequency(character, message) >= frequency
+    ),
+    toPairs,
+    characterHistogram
+  )(emblem);

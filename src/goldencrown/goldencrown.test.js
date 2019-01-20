@@ -1,4 +1,4 @@
-import { characterHistogram, characterFrequency } from "./";
+import { characterHistogram, characterFrequency, messageHasEmblem } from "./";
 
 describe("characterHistogram", () => {
   it("should count characters in a string", () => {
@@ -28,5 +28,12 @@ describe("characterFrequency()", () => {
     expect(characterFrequency("a", "abcdabcdabcd")).toBe(3);
     expect(characterFrequency("b", "abcdabcdabcd")).toBe(3);
     expect(characterFrequency("", "abcdabcdabcd")).toBe(13);
+  });
+});
+
+describe("messageHasEmblem()", () => {
+  it("should return if the message has emblem", () => {
+    expect(messageHasEmblem("message for owls", "owl")).toBe(true);
+    expect(messageHasEmblem("message for owls", "fish")).toBe(false);
   });
 });
