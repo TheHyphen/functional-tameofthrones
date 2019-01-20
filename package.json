@@ -1,0 +1,37 @@
+{
+  "name": "tameofthrones",
+  "version": "1.0.0",
+  "description": "An Epic Tame Of Thrones Battle",
+  "bin": "bin/main.js",
+  "preferGlobal": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "cross-env NODE_ENV=production rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thehyphen/tameofthrones.git"
+  },
+  "keywords": [
+    "tameofthrones",
+    "everest",
+    "challenge"
+  ],
+  "author": "Mohammed Faizuddin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thehyphen/tameofthrones/issues"
+  },
+  "homepage": "https://github.com/thehyphen/tameofthrones#readme",
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "cross-env": "^5.2.0",
+    "jest": "^23.6.0",
+    "rollup": "^1.1.0"
+  },
+  "dependencies": {
+    "ramda": "^0.26.1"
+  }
+}
