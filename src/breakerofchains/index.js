@@ -44,11 +44,6 @@ export const labelText = R.curry((kingdom, ally, text) => ({
   text
 }));
 
-export const addAlly = ally =>
-  R.evolve({
-    allies: R.append(ally)
-  });
-
 export const uniqueAllies = R.uniqBy(R.prop("ally"));
 
 export const determineAllies = R.compose(
