@@ -65,3 +65,5 @@ export const potentialAllies = kingdom =>
     R.without([kingdom]),
     R.map(R.prop("name"))
   )(database);
+
+export const isKingdom = R.flip(R.contains)(R.map(R.prop("name"), database));

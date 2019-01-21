@@ -1,4 +1,4 @@
-import { emblem, database, potentialAllies } from "./index";
+import { emblem, database, potentialAllies, isKingdom } from "./index";
 
 describe("emblem()", () => {
   it("should return correct emblem given kingdom", () => {
@@ -15,5 +15,12 @@ describe("potentialAllies()", () => {
     expect(
       output.find(kingdom => kingdom.name === database[0].name)
     ).toBeUndefined();
+  });
+});
+
+describe("isKingdom()", () => {
+  it("should return if string is kingdom", () => {
+    expect(isKingdom(database[0].name)).toBe(true);
+    expect(isKingdom("some thing random")).toBe(false);
   });
 });
