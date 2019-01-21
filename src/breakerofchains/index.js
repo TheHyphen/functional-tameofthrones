@@ -131,3 +131,5 @@ export const main = R.compose(
   run,
   collectInput
 );
+
+export default main;

@@ -22,10 +22,7 @@ export const characterFrequency = R.curry((character, string) =>
 
 export const messageHasEmblem = (message, emblem) =>
   R.compose(
-    R.all(
-      ([character, frequency]) =>
-        characterFrequency(character, message) >= frequency
-    ),
+    R.all(([character, frequency]) => characterFrequency(character, message) >= frequency),
     R.toPairs,
     characterHistogram
   )(emblem);
@@ -86,6 +83,8 @@ export const run = R.filter(
 
 export const main = R.compose(
   output,
-  main,
+  run,
   collectInput
 );
+
+export default main;
