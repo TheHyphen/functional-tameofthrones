@@ -1,23 +1,27 @@
 const readlineSync = require("readline-sync");
 
-export const input = options => {
+const input = options => {
   const {
     multiline = false,
     question = "",
     preprocess = x => x,
-    terminate = x => x === ""
+    validate = () => true
   } = options;
 
   if (!multiline) {
-    return preprocess(readlineSync.question(question));
+    const result = readlineSync.question(question);
+
+    return validate(result) || result === ""
+      ? preprocess(result)
+      : input({ ...options, question: "Invalid input, try again:\n" });
   }
 
   const responses = [];
-  let response = input({ question, preprocess });
+  let response = input({ question, preprocess, validate });
 
-  while (!terminate(response)) {
+  while (response !== "") {
     responses.push(response);
-    response = input({ preprocess });
+    response = input({ preprocess, validate });
   }
 
   return responses;
