@@ -19,7 +19,7 @@ describe("isMessageValid()", () => {
     };
     expect(isMessageValid(input)).toBe(true);
   });
-  it("should return false if text has emblem", () => {
+  it("should return false if text has no emblem", () => {
     const input = {
       text: `pre ${database[1].emblem} post`,
       ally: database[0].name,

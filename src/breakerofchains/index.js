@@ -48,7 +48,7 @@ export const addAlly = ally =>
     allies: R.append(ally)
   });
 
-export const initialScores = map(kingdom => ({
+export const initialScores = kingdom => ({
   kingdom,
   allies: []
-}));
+});
