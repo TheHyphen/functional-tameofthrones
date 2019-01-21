@@ -1,6 +1,11 @@
 import * as R from "ramda";
 import { messageHasEmblem } from "../goldencrown";
-import { emblem, isKingdom, potentialAllies, messages as texts } from "./../data";
+import {
+  emblem,
+  isKingdom,
+  potentialAllies,
+  messages as texts
+} from "./../data";
 import { input } from "../input";
 
 export const randomBelow = max => Math.floor(Math.random() * (max + 1));
@@ -11,14 +16,17 @@ export const randomIndex = R.compose(
 );
 export const randomText = messages => R.nth(randomIndex(messages), messages);
 
-export const takeRandomFromList = R.converge(R.converge(R.pair, [R.nth, R.flip(R.remove)(1)]), [
-  R.compose(
-    randomBelow,
-    R.add(-1),
-    R.length
-  ),
-  R.identity
-]);
+export const takeRandomFromList = R.converge(
+  R.converge(R.pair, [R.nth, R.flip(R.remove)(1)]),
+  [
+    R.compose(
+      randomBelow,
+      R.add(-1),
+      R.length
+    ),
+    R.identity
+  ]
+);
 
 export const any = R.curry((size, messages) => {
   const [removedMessage, newMessagesList] = takeRandomFromList(messages);
@@ -91,7 +99,8 @@ export const preprocessInput = R.compose(
 
 export const collectInput = () =>
   input({
-    question: "Enter kingdoms separated with comma: <kingdom1>, <kingdom2>, ...",
+    question:
+      "Enter kingdoms separated with comma: <kingdom1>, <kingdom2>, ... \n",
     validate: validateInput,
     preprocess: preprocessInput
   });

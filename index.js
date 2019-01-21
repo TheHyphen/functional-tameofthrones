@@ -14,11 +14,11 @@ const program = getArgs(process.argv, ["goldencrown", "breakerofchains"]);
 
 switch (program) {
   case "goldencrown": {
-    goldencrown();
+    console.log(goldencrown());
     break;
   }
   case "breakerofchains": {
-    breakerofchains();
+    console.log(breakerofchains());
     break;
   }
 }

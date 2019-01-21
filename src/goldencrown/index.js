@@ -22,7 +22,10 @@ export const characterFrequency = R.curry((character, string) =>
 
 export const messageHasEmblem = (message, emblem) =>
   R.compose(
-    R.all(([character, frequency]) => characterFrequency(character, message) >= frequency),
+    R.all(
+      ([character, frequency]) =>
+        characterFrequency(character, message) >= frequency
+    ),
     R.toPairs,
     characterHistogram
   )(emblem);
@@ -62,22 +65,19 @@ export const collectInput = () =>
 
 export const output = R.converge(R.pair, [
   R.length,
-  R.map(
-    R.compose(
-      R.join(", "),
-      R.head,
-      R.split(",")
-    )
+  R.compose(
+    R.join(", "),
+    R.map(R.head)
   )
 ]);
 
 export const run = R.filter(
-  R.converge(R.flip(messageHasEmblem), [
+  R.converge(messageHasEmblem, [
+    R.last,
     R.compose(
       emblem,
       R.head
-    ),
-    R.last
+    )
   ])
 );
 
