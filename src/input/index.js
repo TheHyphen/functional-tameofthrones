@@ -1,6 +1,6 @@
 const readlineSync = require("readline-sync");
 
-const input = options => {
+export const input = options => {
   const {
     multiline = false,
     question = "",

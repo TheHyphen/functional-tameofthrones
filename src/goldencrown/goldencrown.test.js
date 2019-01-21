@@ -1,5 +1,11 @@
-import { characterHistogram, characterFrequency, messageHasEmblem } from "./";
-
+import {
+  characterHistogram,
+  characterFrequency,
+  messageHasEmblem,
+  validateInput,
+  preprocessInput
+} from "./";
+import { database } from "./../data";
 describe("characterHistogram", () => {
   it("should count characters in a string", () => {
     expect(characterHistogram("something")).toEqual({
@@ -35,5 +41,27 @@ describe("messageHasEmblem()", () => {
   it("should return if the message has emblem", () => {
     expect(messageHasEmblem("message for owls", "owl")).toBe(true);
     expect(messageHasEmblem("message for owls", "fish")).toBe(false);
+  });
+});
+
+describe("validateInput()", () => {
+  it("should check if isKingdom and message is after the comma", () => {
+    expect(validateInput(`${database[0].name}, message for the kingdom`)).toBe(
+      true
+    );
+    expect(validateInput(`nonexistent, message for the kingdom`)).toBe(false);
+    expect(validateInput(`${database[0].name} message for the kingdom`)).toBe(
+      false
+    );
+  });
+});
+
+describe("preprocessInput()", () => {
+  it("should split at the first comma", () => {
+    expect(preprocessInput("hey, there")).toEqual(["hey", "there"]);
+    expect(preprocessInput("hey, there, how, are, you")).toEqual([
+      "hey",
+      "there, how, are, you"
+    ]);
   });
 });
