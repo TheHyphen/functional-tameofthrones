@@ -49,11 +49,6 @@ export const addAlly = ally =>
     allies: R.append(ally)
   });
 
-export const initialScores = kingdom => ({
-  kingdom,
-  allies: []
-});
-
 export const uniqueAllies = R.uniqBy(R.prop("ally"));
 
 export const determineAllies = R.compose(
