@@ -1,4 +1,11 @@
-import { any, isMessageValid, determineAllies, uniqueAllies } from "./index";
+import {
+  any,
+  isMessageValid,
+  determineAllies,
+  uniqueAllies,
+  highestAlliesCount,
+  tiedKingdoms
+} from "./index";
 import { database } from "./../data";
 describe("any()", () => {
   it("should return random elements from list", () => {
@@ -100,6 +107,34 @@ describe("determineAllies()", () => {
       { kingdom: "kingdom1", allies: ["ally1", "ally2"] },
       { kingdom: "kingdom2", allies: ["ally3"] },
       { kingdom: "kingdom3", allies: ["ally4"] }
+    ]);
+  });
+});
+
+describe("highestAlliesCount()", () => {
+  it("should return highest number of allies", () => {
+    const input = [
+      { kingdom: "kingdom1", allies: ["ally1", "ally2"] },
+      { kingdom: "kingdom2", allies: ["ally3", "ally5"] },
+      { kingdom: "kingdom3", allies: ["ally4"] }
+    ];
+    const output = highestAlliesCount(input);
+    expect(output).toBe(2);
+  });
+});
+
+describe("tiedKingdoms()", () => {
+  it("should return the kingdoms with tied number of allies", () => {
+    const input = [
+      { kingdom: "kingdom1", allies: ["ally1", "ally2"] },
+      { kingdom: "kingdom2", allies: ["ally3", "ally5"] },
+      { kingdom: "kingdom3", allies: ["ally4"] }
+    ];
+    const output = tiedKingdoms(2, input);
+    expect(output).toHaveLength(2);
+    expect(output).toEqual([
+      { kingdom: "kingdom1", allies: ["ally1", "ally2"] },
+      { kingdom: "kingdom2", allies: ["ally3", "ally5"] }
     ]);
   });
 });

@@ -52,3 +52,17 @@ export const determineAllies = R.compose(
   R.mapObjIndexed(allies => R.map(R.prop("ally"), allies)),
   R.groupBy(R.prop("kingdom"))
 );
+
+export const alliesCount = R.compose(
+  R.length,
+  R.prop("allies")
+);
+export const highestAlliesCount = R.compose(
+  alliesCount,
+  R.last,
+  R.sortBy(alliesCount)
+);
+
+export const tiedKingdoms = R.curry((numberOfAllies, results) =>
+  R.filter(result => R.equals(alliesCount(result), numberOfAllies))(results)
+);
