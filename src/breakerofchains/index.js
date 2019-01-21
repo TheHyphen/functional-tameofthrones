@@ -1,6 +1,6 @@
 import * as R from "ramda";
 import { messageHasEmblem } from "../goldencrown";
-import { emblem, isKingdom } from "./../data";
+import { emblem, isKingdom, potentialAllies, messages as texts } from "./../data";
 import { input } from "../input";
 
 export const randomBelow = max => Math.floor(Math.random() * (max + 1));
@@ -9,18 +9,16 @@ export const randomIndex = R.compose(
   randomBelow,
   R.length
 );
+export const randomText = messages => R.nth(randomIndex(messages), messages);
 
-export const takeRandomFromList = R.converge(
-  R.converge(R.pair, [R.nth, R.flip(R.remove)(1)]),
-  [
-    R.compose(
-      randomBelow,
-      R.add(-1),
-      R.length
-    ),
-    R.identity
-  ]
-);
+export const takeRandomFromList = R.converge(R.converge(R.pair, [R.nth, R.flip(R.remove)(1)]), [
+  R.compose(
+    randomBelow,
+    R.add(-1),
+    R.length
+  ),
+  R.identity
+]);
 
 export const any = R.curry((size, messages) => {
   const [removedMessage, newMessagesList] = takeRandomFromList(messages);
@@ -45,9 +43,21 @@ export const labelText = R.curry((kingdom, ally, text) => ({
   text
 }));
 
-export const uniqueAllies = R.uniqBy(R.prop("ally"));
+export const writeMessage = (kingdom, ally) =>
+  R.compose(
+    labelText(kingdom, ally),
+    randomText
+  )(texts);
 
-export const determineAllies = R.compose(
+export const writeMessagesFromKingdom = kingdom =>
+  R.compose(
+    R.map(ally => writeMessage(kingdom, ally)),
+    potentialAllies
+  )(kingdom);
+
+export const uniqueByAlly = R.uniqBy(R.prop("ally"));
+
+export const groupByKindom = R.compose(
   R.map(([kingdom, allies]) => ({ kingdom, allies })),
   R.toPairs,
   R.mapObjIndexed(allies => R.map(R.prop("ally"), allies)),
@@ -79,12 +89,45 @@ export const preprocessInput = R.compose(
   R.split(",")
 );
 
-export const collecInput = () =>
+export const collectInput = () =>
   input({
-    question:
-      "Enter kingdoms separated with comma: <kingdom1>, <kingdom2>, ...",
+    question: "Enter kingdoms separated with comma: <kingdom1>, <kingdom2>, ...",
     validate: validateInput,
     preprocess: preprocessInput
   });
 
 export const output = R.converge(R.pair, [R.prop("kingdom"), R.prop("allies")]);
+
+export const lengthEquals = number =>
+  R.compose(
+    R.equals(number),
+    R.length
+  );
+
+export const run = kingdoms =>
+  R.compose(
+    R.cond([
+      [lengthEquals(0), () => run(kingdoms)],
+      [lengthEquals(1), R.head],
+      [
+        R.T,
+        R.compose(
+          run,
+          R.map(R.prop("kingdom"))
+        )
+      ]
+    ]),
+    R.converge(tiedKingdoms, [highestAlliesCount, R.identity]),
+    groupByKindom,
+    uniqueByAlly,
+    R.filter(isMessageValid),
+    any(6),
+    R.flatten,
+    R.map(writeMessagesFromKingdom)
+  )(kingdoms);
+
+export const main = R.compose(
+  output,
+  run,
+  collectInput
+);

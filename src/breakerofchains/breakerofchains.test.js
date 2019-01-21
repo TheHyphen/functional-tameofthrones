@@ -1,12 +1,16 @@
 import {
   any,
   isMessageValid,
-  determineAllies,
-  uniqueAllies,
+  groupByKindom,
+  uniqueByAlly,
   highestAlliesCount,
   tiedKingdoms,
   validateInput,
-  preprocessInput
+  preprocessInput,
+  writeMessage,
+  writeMessagesFromKingdom,
+  run,
+  lengthEquals
 } from "./index";
 import { database } from "./../data";
 describe("any()", () => {
@@ -38,7 +42,7 @@ describe("isMessageValid()", () => {
   });
 });
 
-describe("uniqueAllies()", () => {
+describe("uniqueByAlly()", () => {
   it("should return only unique allies", () => {
     const input = [
       {
@@ -66,7 +70,7 @@ describe("uniqueAllies()", () => {
         ally: "ally3"
       }
     ];
-    const output = uniqueAllies(input);
+    const output = uniqueByAlly(input);
     expect(output).toEqual([
       {
         kingdom: "kingdom1",
@@ -84,7 +88,7 @@ describe("uniqueAllies()", () => {
   });
 });
 
-describe("determineAllies()", () => {
+describe("groupByKingdom()", () => {
   it("should return allies from list of messages", () => {
     const input = [
       {
@@ -104,7 +108,7 @@ describe("determineAllies()", () => {
         ally: "ally4"
       }
     ];
-    const output = determineAllies(input);
+    const output = groupByKindom(input);
     expect(output).toEqual([
       { kingdom: "kingdom1", allies: ["ally1", "ally2"] },
       { kingdom: "kingdom2", allies: ["ally3"] },
@@ -161,5 +165,41 @@ describe("preprocessInput()", () => {
     const input = `abc, def, ghi,     jkl`;
     const output = preprocessInput(input);
     expect(output).toEqual(["abc", "def", "ghi", "jkl"]);
+  });
+});
+
+describe("writeMessage()", () => {
+  it("should write message with random text", () => {
+    const output = writeMessage("space", "air");
+    expect(output).toHaveProperty("kingdom");
+    expect(output).toHaveProperty("ally");
+    expect(output).toHaveProperty("text");
+  });
+});
+
+describe("writeMessagesFromKingdom()", () => {
+  it("should return messages to all allies from given kingdom", () => {
+    const output = writeMessagesFromKingdom(database[0].name);
+    expect(output).toHaveLength(database.length - 1);
+    output.forEach(message => {
+      expect(message.kingdom).toBe(database[0].name);
+      expect(database.map(data => data.name)).toContain(message.ally);
+    });
+  });
+});
+
+describe("lengthEquals()", () => {
+  it("should return true if length is given", () => {
+    expect(lengthEquals(2)([1, 1])).toBe(true);
+    expect(lengthEquals(1)([1, 1])).toBe(false);
+  });
+});
+
+describe("run()", () => {
+  it("should return correct winner", () => {
+    const output = run([database[0].name, database[1].name]);
+    expect(output).toBeDefined();
+    expect(output).toHaveProperty("kingdom");
+    expect(output).toHaveProperty("allies");
   });
 });
