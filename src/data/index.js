@@ -1,4 +1,4 @@
-import { find, prop, compose } from "ramda";
+import * as R from "ramda";
 export const database = [
   {
     name: "space",
@@ -55,7 +55,13 @@ export const messages = [
 ];
 
 export const emblem = name =>
-  compose(
-    prop("emblem"),
-    find(kingdom => kingdom.name === name)
+  R.compose(
+    R.prop("emblem"),
+    R.find(kingdom => kingdom.name === name)
+  )(database);
+
+export const potentialAllies = kingdom =>
+  R.compose(
+    R.without([kingdom]),
+    R.map(R.prop("name"))
   )(database);
