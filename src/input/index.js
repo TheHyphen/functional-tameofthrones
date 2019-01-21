@@ -1,17 +1,14 @@
 const readlineSync = require("readline-sync");
 
 export const input = options => {
-  const {
-    multiline = false,
-    question = "",
-    preprocess = x => x,
-    validate = () => true
-  } = options;
+  const { multiline = false, question = "", preprocess = x => x, validate = () => true } = options;
 
   if (!multiline) {
     const result = readlineSync.question(question);
-
-    return validate(result) || result === ""
+    if (result === "") {
+      return result;
+    }
+    return validate(result)
       ? preprocess(result)
       : input({ ...options, question: "Invalid input, try again:\n" });
   }
