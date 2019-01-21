@@ -1,6 +1,7 @@
 import * as R from "ramda";
 import { messageHasEmblem } from "../goldencrown";
-import { emblem } from "./../data";
+import { emblem, isKingdom } from "./../data";
+import { input } from "../input";
 
 export const randomBelow = max => Math.floor(Math.random() * (max + 1));
 export const randomIndex = R.compose(
@@ -66,3 +67,24 @@ export const highestAlliesCount = R.compose(
 export const tiedKingdoms = R.curry((numberOfAllies, results) =>
   R.filter(result => R.equals(alliesCount(result), numberOfAllies))(results)
 );
+
+export const validateInput = R.compose(
+  R.all(isKingdom),
+  R.map(R.compose(R.trim)),
+  R.split(",")
+);
+
+export const preprocessInput = R.compose(
+  R.map(R.trim),
+  R.split(",")
+);
+
+export const collecInput = () =>
+  input({
+    question:
+      "Enter kingdoms separated with comma: <kingdom1>, <kingdom2>, ...",
+    validate: validateInput,
+    preprocess: preprocessInput
+  });
+
+export const output = R.converge(R.pair, [R.prop("kingdom"), R.prop("allies")]);

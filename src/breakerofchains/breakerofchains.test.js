@@ -4,7 +4,9 @@ import {
   determineAllies,
   uniqueAllies,
   highestAlliesCount,
-  tiedKingdoms
+  tiedKingdoms,
+  validateInput,
+  preprocessInput
 } from "./index";
 import { database } from "./../data";
 describe("any()", () => {
@@ -136,5 +138,28 @@ describe("tiedKingdoms()", () => {
       { kingdom: "kingdom1", allies: ["ally1", "ally2"] },
       { kingdom: "kingdom2", allies: ["ally3", "ally5"] }
     ]);
+  });
+});
+
+describe("validateInput()", () => {
+  it("should check if input strings are all kingdoms", () => {
+    const input = `${database[0].name}, ${database[1].name}, ${
+      database[3].name
+    }`;
+    const output = validateInput(input);
+    expect(output).toBe(true);
+  });
+  it("should fail when not kingdoms", () => {
+    const input = `${database[0].name}, ${database[1].name}, fail`;
+    const output = validateInput(input);
+    expect(output).toBe(false);
+  });
+});
+
+describe("preprocessInput()", () => {
+  it("should trim and split the input string", () => {
+    const input = `abc, def, ghi,     jkl`;
+    const output = preprocessInput(input);
+    expect(output).toEqual(["abc", "def", "ghi", "jkl"]);
   });
 });
