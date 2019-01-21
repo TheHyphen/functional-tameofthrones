@@ -37,6 +37,7 @@ export const isMessageValid = R.converge(messageHasEmblem, [
   )
 ]);
 
+// a message is a labelled text
 export const labelText = R.curry((kingdom, ally, text) => ({
   kingdom,
   ally,
@@ -52,3 +53,12 @@ export const initialScores = kingdom => ({
   kingdom,
   allies: []
 });
+
+export const uniqueAllies = R.uniqBy(R.prop("ally"));
+
+export const determineAllies = R.compose(
+  R.map(([kingdom, allies]) => ({ kingdom, allies })),
+  R.toPairs,
+  R.mapObjIndexed(allies => R.map(R.prop("ally"), allies)),
+  R.groupBy(R.prop("kingdom"))
+);
