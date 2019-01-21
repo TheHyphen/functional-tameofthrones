@@ -3,9 +3,11 @@ import {
   characterFrequency,
   messageHasEmblem,
   validateInput,
-  preprocessInput
+  preprocessInput,
+  run
 } from "./";
 import { database } from "./../data";
+
 describe("characterHistogram", () => {
   it("should count characters in a string", () => {
     expect(characterHistogram("something")).toEqual({
@@ -62,6 +64,24 @@ describe("preprocessInput()", () => {
     expect(preprocessInput("hey, there, how, are, you")).toEqual([
       "hey",
       "there, how, are, you"
+    ]);
+  });
+});
+
+describe("run()", () => {
+  it("should give correct output", () => {
+    const input = [
+      [database[0].name, `pre ${database[0].emblem} post`],
+      [database[1].name, `pre ${database[1].emblem} post`],
+      [database[2].name, `pre fail post`],
+      [database[3].name, `pre ${database[3].emblem} post`]
+    ];
+    const output = run(input);
+    const formatted = output.map(([kingdom, message]) => kingdom);
+    expect(formatted).toEqual([
+      database[0].name,
+      database[1].name,
+      database[3].name
     ]);
   });
 });

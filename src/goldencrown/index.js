@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import { isKingdom } from "./../data";
+import { isKingdom, emblem } from "./../data";
 import { input } from "./../input";
 
 export const characterHistogram = R.compose(
@@ -45,7 +45,12 @@ export const validateInput = R.allPass([
 ]);
 
 export const preprocessInput = R.compose(
-  R.map(R.trim),
+  R.map(
+    R.compose(
+      R.toLower,
+      R.trim
+    )
+  ),
   R.init,
   R.split(/,(.+)/)
 );
@@ -57,3 +62,30 @@ export const collectInput = () =>
     validate: validateInput,
     preprocess: preprocessInput
   });
+
+export const output = R.converge(R.pair, [
+  R.length,
+  R.map(
+    R.compose(
+      R.join(", "),
+      R.head,
+      R.split(",")
+    )
+  )
+]);
+
+export const run = R.filter(
+  R.converge(R.flip(messageHasEmblem), [
+    R.compose(
+      emblem,
+      R.head
+    ),
+    R.last
+  ])
+);
+
+export const main = R.compose(
+  output,
+  main,
+  collectInput
+);
