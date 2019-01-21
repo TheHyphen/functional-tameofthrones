@@ -1,3 +1,4 @@
+import resolve from "rollup-plugin-node-resolve";
 export default {
   input: "index.js",
   output: {
@@ -5,5 +6,6 @@ export default {
     format: "cjs",
     // shebang for *nix
     banner: "#!/usr/bin/env node"
-  }
+  },
+  plugins: [resolve()]
 };
